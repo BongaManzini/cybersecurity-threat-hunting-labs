@@ -1,0 +1,36 @@
+title: Cobalt Strike Default Named Pipe Communication
+id: 4b29f7df-2f88-4660-84c2-9ceb6379c65a
+status: production
+description: Detects suspicious process creation or inter-process communication using default Cobalt Strike malleable C2 named pipe patterns.
+references:
+    - https://attack.mitre.org/techniques/T1055/
+    - https://www.mandiant.com/resources/defining-cobalt-strike-reflective-loader
+author: Bonga Manzini
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.defense_evasion
+    - attack.t1055
+    - attack.t1570
+logsource:
+    category: pipe_created
+    product: windows
+detection:
+    selection_pipes:
+        PipeName|startswith:
+            - '\msagent_'
+            - '\status_'
+            - '\mypipe-f'
+            - '\mypipe-h'
+            - '\ntsvcs'
+            - '\scerpc'
+            - '\mojo.5688.8052.'
+            - '\DserNamePipe'
+    filter_legitimate:
+        Image|endswith:
+            - '\System32\services.exe'
+            - '\System32\lsass.exe'
+    condition: selection_pipes and not filter_legitimate
+falsepositives:
+    - Rare administrative custom automation scripts
+level: high

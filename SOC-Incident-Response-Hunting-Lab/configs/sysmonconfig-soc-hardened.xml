@@ -1,0 +1,40 @@
+<Sysmon schemaversion="4.90">
+  <!-- Production Hardened SOC Sysmon Configuration Baseline -->
+  <!-- Target: Windows 10/11 & Windows Server 2019/2022 -->
+  <HashAlgorithms>md5,sha256,imphash</HashAlgorithms>
+  <EventFiltering>
+    <!-- Event ID 1: Process Creation -->
+    <RuleGroup name="ProcessCreation" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <CommandLine condition="contains any">powershell;pwsh;cmd.exe;wscript;cscript;mshta;certutil;bitsadmin;vssadmin;wbadmin;whoami;net.exe;nltest;reg.exe;rundll32.exe</CommandLine>
+        <Image condition="image">svchost.exe</Image>
+        <IntegrityLevel condition="is">System</IntegrityLevel>
+      </ProcessCreate>
+    </RuleGroup>
+
+    <!-- Event ID 8: CreateRemoteThread (Process Injection) -->
+    <RuleGroup name="RemoteThreadInjection" groupRelation="or">
+      <CreateRemoteThread onmatch="include">
+        <TargetImage condition="end with">lsass.exe</TargetImage>
+        <TargetImage condition="end with">explorer.exe</TargetImage>
+        <TargetImage condition="end with">svchost.exe</TargetImage>
+      </CreateRemoteThread>
+    </RuleGroup>
+
+    <!-- Event ID 10: ProcessAccess (Credential Theft) -->
+    <RuleGroup name="ProcessAccessLSASS" groupRelation="or">
+      <ProcessAccess onmatch="include">
+        <TargetImage condition="end with">lsass.exe</TargetImage>
+      </ProcessAccess>
+    </RuleGroup>
+
+    <!-- Event ID 17/18: Pipe Created / Connected (C2 Communication) -->
+    <RuleGroup name="NamedPipeC2" groupRelation="or">
+      <PipeEvent onmatch="include">
+        <PipeName condition="begin with">\msagent_</PipeName>
+        <PipeName condition="begin with">\status_</PipeName>
+        <PipeName condition="begin with">\mypipe</PipeName>
+      </PipeEvent>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

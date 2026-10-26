@@ -1,0 +1,50 @@
+{
+  "graph_metadata": {
+    "title": "Corporate Active Directory Attack Path Simulation",
+    "version": 5,
+    "source": "SharpHound Ingestion Engine",
+    "target": "DOMAIN ADMINS@CORP.INTERNAL"
+  },
+  "attack_paths": [
+    {
+      "path_id": "PATH-01-KERBEROAST-TO-DA",
+      "risk_score": 9.5,
+      "steps": [
+        {
+          "node_type": "User",
+          "name": "BOB.ANALYST@CORP.INTERNAL",
+          "action": "Initial Compromise via Phishing / Workstation EDR Bypass"
+        },
+        {
+          "node_type": "KerberosSPN",
+          "name": "MSSQLSvc/sqlcluster.corp.internal:1433",
+          "account": "SVC_SQL_SERVICE@CORP.INTERNAL",
+          "action": "Kerberoast request using RC4 encryption (Event 4769)",
+          "hash_extracted": "$krb5tgs$23$*SVC_SQL_SERVICE*CORP.INTERNAL*...",
+          "cracked_plaintext": "Summer2024!"
+        },
+        {
+          "node_type": "Group",
+          "name": "DATABASE_ADMINISTRATORS@CORP.INTERNAL",
+          "action": "SVC_SQL_SERVICE has direct member-of relationship"
+        },
+        {
+          "node_type": "ACL_Edge",
+          "name": "GenericAll on IT_INFRASTRUCTURE_ADMINS",
+          "action": "Write owner / Reset password on intermediate admin account"
+        },
+        {
+          "node_type": "Group",
+          "name": "DOMAIN ADMINS@CORP.INTERNAL",
+          "action": "Direct privilege escalation to Forest Root Domain Admin"
+        }
+      ]
+    }
+  ],
+  "mitigation_priorities": [
+    "Rotate SVC_SQL_SERVICE to a 32+ character random password or gMSA",
+    "Remove SVC_SQL_SERVICE from DATABASE_ADMINISTRATORS",
+    "Strip GenericAll ACL permissions from IT_INFRASTRUCTURE_ADMINS group object",
+    "Enforce AES-256 for all Kerberos ticket requests (msDS-SupportedEncryptionTypes: 24)"
+  ]
+}

@@ -1,0 +1,39 @@
+title: Suspicious PowerShell Obfuscated Download Cradle
+id: 3c8e11b2-10f7-418b-82ad-77894a8eefbb
+status: production
+description: Detects encoded, compressed, or inline web client download cradles executed via PowerShell to stage malware payloads.
+references:
+    - https://attack.mitre.org/techniques/T1059/001/
+author: Bonga Manzini
+date: 2026-10-26
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_process:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+    selection_patterns:
+        CommandLine|contains:
+            - 'FromBase64String'
+            - 'DownloadString('
+            - 'DownloadFile('
+            - 'Net.WebClient'
+            - 'Invoke-WebRequest'
+            - 'iwr '
+            - 'curl '
+            - 'System.IO.Compression'
+            - '[Convert]::'
+            - '-enc '
+            - '-EncodedCommand'
+            - 'bypass'
+            - 'IEX('
+            - '| iex'
+    condition: selection_process and selection_patterns
+falsepositives:
+    - Highly automated deployment software using uncompiled inline scripts
+level: high

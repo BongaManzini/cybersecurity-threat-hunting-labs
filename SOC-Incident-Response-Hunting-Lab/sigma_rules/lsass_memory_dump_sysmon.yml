@@ -1,0 +1,34 @@
+title: LSASS Process Memory Access & Credential Dumping
+id: 9fa2cb6a-72aa-4b0d-9598-c1e1c3132e18
+status: production
+description: Detects suspicious process memory access to lsass.exe indicating credential harvesting (Mimikatz, Procdump, Comsvcs, Dumpert).
+references:
+    - https://attack.mitre.org/techniques/T1003/001/
+author: Bonga Manzini
+date: 2026-10-26
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+logsource:
+    category: process_access
+    product: windows
+detection:
+    selection:
+        TargetImage|endswith: '\lsass.exe'
+        GrantedAccess|contains:
+            - '0x1010'      # PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ
+            - '0x1410'
+            - '0x1F0FFF'    # PROCESS_ALL_ACCESS
+            - '0x1F1FF'
+            - '0x0410'
+    filter_trusted:
+        SourceImage|endswith:
+            - '\Program Files\Windows Defender\MsMpEng.exe'
+            - '\Program Files\CrowdStrike\CSFalconService.exe'
+            - '\Program Files (x86)\Symantec\Symantec Endpoint Protection\Smc.exe'
+            - '\Windows\System32\wbem\WmiPrvSE.exe'
+            - '\Windows\System32\svchost.exe'
+    condition: selection and not filter_trusted
+falsepositives:
+    - Custom antivirus or vulnerability scanners not whitelisted
+level: critical

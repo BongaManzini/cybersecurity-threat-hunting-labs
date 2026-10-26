@@ -1,0 +1,44 @@
+-- ==============================================================================
+-- Enterprise SOC Threat Hunting Queries (Splunk SPL)
+-- Author: Bonga Manzini <contact@bongamanzini.dev>
+-- Framework: MITRE ATT&CK & Threat Hunting Best Practices
+-- ==============================================================================
+
+-- ------------------------------------------------------------------------------
+-- HUNT 1: Periodic C2 Beaconing via Delta-Time Variance & Jitter Analysis
+-- MITRE ATT&CK: T1071 (Application Layer Protocol)
+-- Description: Identifies network connections to external destinations that exhibit
+-- strict regular interval callbacks (low delta-time variance, jitter < 15%).
+-- ------------------------------------------------------------------------------
+index=firewall action=allowed dest_category!=internal
+| streamstats current=f window=1 last(_time) as prev_time by src_ip, dest_ip, dest_port
+| eval delta_time = prev_time - _time
+| stats count, avg(delta_time) as mean_interval, var(delta_time) as variance_interval, stdev(delta_time) as stdev_interval by src_ip, dest_ip, dest_port
+| where count > 50 AND stdev_interval < 5 AND mean_interval > 10
+| eval jitter_ratio = (stdev_interval / mean_interval) * 100
+| sort jitter_ratio asc
+| table src_ip, dest_ip, dest_port, count, mean_interval, stdev_interval, jitter_ratio
+
+-- ------------------------------------------------------------------------------
+-- HUNT 2: Rare Parent-Child Process Spawning Anomalies (Living-off-the-Land)
+-- MITRE ATT&CK: T1059 (Command and Scripting Interpreter)
+-- Description: Detects command shells spawned by atypical parents such as
+-- web servers, Word/Excel processes, or SQL servers.
+-- ------------------------------------------------------------------------------
+index=sysmon EventCode=1
+| eval ParentBase = mvindex(split(ParentImage, "\\"), -1)
+| eval ChildBase = mvindex(split(Image, "\\"), -1)
+| search ParentBase IN ("w3wp.exe", "httpd.exe", "nginx.exe", "sqlservr.exe", "WINWORD.EXE", "EXCEL.EXE", "spoolsv.exe")
+  AND ChildBase IN ("cmd.exe", "powershell.exe", "pwsh.exe", "cscript.exe", "wscript.exe", "mshta.exe", "rundll32.exe")
+| table _time, host, User, ParentBase, ParentCommandLine, ChildBase, CommandLine
+
+-- ------------------------------------------------------------------------------
+-- HUNT 3: DCSync Replication Privileges & Shadow Credentials
+-- MITRE ATT&CK: T1003.006 (OS Credential Dumping: DCSync)
+-- Description: Correlates Event ID 4662 where AccessMask contains DS-Replication-Get-Changes
+-- from non-Domain Controller source IP addresses.
+-- ------------------------------------------------------------------------------
+index=wineventlog EventCode=4662 ObjectType IN ("%{19195a5b-6da0-11d0-afd3-00c04fd930c9}", "%{1131f6aa-9c07-11d1-f79f-00c04fc2dcd2}")
+| lookup domain_controllers ip AS src_ip OUTPUT is_dc
+| where is_dc!="true"
+| stats count by _time, host, SubjectUserName, SubjectDomainName, src_ip

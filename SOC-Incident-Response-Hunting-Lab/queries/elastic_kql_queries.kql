@@ -1,0 +1,16 @@
+// ==============================================================================
+// Enterprise Elastic Security & Kibana Query Language (KQL) Rules
+// Author: Bonga Manzini <contact@bongamanzini.dev>
+// ==============================================================================
+
+// 1. In-Memory Process Injection (Sysmon Event ID 8 - CreateRemoteThread)
+event.code: 8 and not winlog.event_data.SourceImage: ("C:\\Windows\\System32\\csrss.exe" or "C:\\Windows\\System32\\svchost.exe") and winlog.event_data.TargetImage: "C:\\Windows\\System32\\lsass.exe"
+
+// 2. Suspicious Scheduled Task Creation via Schtasks or PowerShell
+event.category: process and process.name: "schtasks.exe" and process.args: ("/create" or "-create") and process.args: ("/tn" or "/tr")
+
+// 3. Shadow Copy Deletion (Ransomware Preparation - Event ID 1)
+process.name: ("vssadmin.exe" or "wmic.exe" or "wbadmin.exe") and process.command_line: ("delete shadows" or "shadowcopy delete" or "catalog -quiet")
+
+// 4. Lateral Movement via WinRM / PowerShell Remoting
+event.code: 1 and process.parent.name: "wsmprovhost.exe" and process.name: ("cmd.exe" or "powershell.exe" or "whoami.exe" or "net.exe")
