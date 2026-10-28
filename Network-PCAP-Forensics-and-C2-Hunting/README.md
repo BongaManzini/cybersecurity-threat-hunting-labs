@@ -9,11 +9,11 @@ An advanced network security laboratory focused on **Deep Packet Inspection (DPI
 ```
 Network-PCAP-Forensics-and-C2-Hunting/
 ├── tools/
-│   ├── pcap_c2_beacon_analyzer.py   # Statistical delta-time & jitter beacon detector
-│   └── dns_tunnel_detector.py       # Shannon entropy DNS exfiltration detector
+│  ├── pcap_c2_beacon_analyzer.py  # Statistical delta-time & jitter beacon detector
+│  └── dns_tunnel_detector.py    # Shannon entropy DNS exfiltration detector
 ├── cheatsheets/
-│   └── wireshark_df_incident_response.md # Production Wireshark display filter cheat sheet
-└── README.md                        # Master lab walkthrough
+│  └── wireshark_df_incident_response.md # Production Wireshark display filter cheat sheet
+└── README.md            # Master lab walkthrough
 ```
 
 ---

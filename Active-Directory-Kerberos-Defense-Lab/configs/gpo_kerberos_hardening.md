@@ -1,6 +1,6 @@
 # Active Directory Group Policy (GPO) Kerberos Hardening Standard
 
-**Target Environment:** Microsoft Active Directory Domain Services (Windows Server 2019 / 2022)  
+**Target Environment:** Microsoft Active Directory Domain Services (Windows Server 2019 / 2022) 
 **Standard:** CIS Microsoft Windows Server Benchmark (Level 2 Enterprise)
 
 ---
@@ -11,7 +11,7 @@
 Kerberoasting attacks succeed because Active Directory allows client workstations to request Ticket Granting Service (TGS) tickets using legacy **RC4-HMAC** (`0x17`) encryption. RC4 hashes can be cracked offline at gigahash speeds on commodity GPUs via Hashcat (`hashcat -m 13100`).
 
 ### GPO Implementation
-Navigate to:  
+Navigate to: 
 `Computer Configuration` $\to$ `Policies` $\to$ `Windows Settings` $\to$ `Security Settings` $\to$ `Local Policies` $\to$ `Security Options`
 
 **Policy Name:** `Network security: Configure encryption types allowed for Kerberos`

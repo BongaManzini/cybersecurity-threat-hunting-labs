@@ -1,6 +1,6 @@
 # AWS IMDSv2 Hardening & SSRF Defense Blueprint
 
-**Target:** Amazon Web Services (AWS) EC2, ECS, and EKS  
+**Target:** Amazon Web Services (AWS) EC2, ECS, and EKS 
 **Threat Vector:** Server-Side Request Forgery (SSRF) to `http://169.254.169.254` (Capital One style data breach)
 
 ---

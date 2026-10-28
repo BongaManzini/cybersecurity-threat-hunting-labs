@@ -9,13 +9,13 @@ An enterprise-grade laboratory and detection engineering toolkit designed for **
 ```
 Active-Directory-Kerberos-Defense-Lab/
 ├── scripts/
-│   ├── kerberos_ticket_auditor.py   # AD SPN cipher suite & account risk analyzer
-│   └── spn_roast_detector.py        # Real-time Event ID 4769 RC4 anomaly detector
+│  ├── kerberos_ticket_auditor.py  # AD SPN cipher suite & account risk analyzer
+│  └── spn_roast_detector.py    # Real-time Event ID 4769 RC4 anomaly detector
 ├── telemetry/
-│   └── bloodhound_attack_path_analysis.json # Simulated SharpHound graph export
+│  └── bloodhound_attack_path_analysis.json # Simulated SharpHound graph export
 ├── configs/
-│   └── gpo_kerberos_hardening.md    # GPO baseline enforcing AES-256 and gMSA
-└── README.md                        # Architectural lab walkthrough
+│  └── gpo_kerberos_hardening.md  # GPO baseline enforcing AES-256 and gMSA
+└── README.md            # Architectural lab walkthrough
 ```
 
 ---

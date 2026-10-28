@@ -9,11 +9,11 @@ A specialized cloud security engineering and application security (AppSec) labor
 ```
 Cloud-Security-and-OWASP-Audit-Lab/
 ├── audit_scripts/
-│   ├── iam_privesc_auditor.py       # Scans AWS IAM policies for 21 privilege escalation vectors
-│   └── jwt_security_auditor.py      # Audits JWT tokens for 'none' alg, key confusion, & leaks
+│  ├── iam_privesc_auditor.py    # Scans AWS IAM policies for 21 privilege escalation vectors
+│  └── jwt_security_auditor.py   # Audits JWT tokens for 'none' alg, key confusion, & leaks
 ├── guides/
-│   └── aws_imdsv2_ssrf_defense.md   # IMDSv2 metadata protection & Terraform baseline
-└── README.md                        # Master lab documentation
+│  └── aws_imdsv2_ssrf_defense.md  # IMDSv2 metadata protection & Terraform baseline
+└── README.md            # Master lab documentation
 ```
 
 ---

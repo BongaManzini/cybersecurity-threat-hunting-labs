@@ -9,33 +9,33 @@ A comprehensive, industry-standard suite of cybersecurity defense, threat huntin
 ```
 Hands-On-Labs-and-Simulations/
 ├── Active-Directory-Kerberos-Defense-Lab/
-│   ├── scripts/kerberos_ticket_auditor.py       # Audits SPNs, RC4 ciphers, and delegation risks
-│   ├── scripts/spn_roast_detector.py            # Real-time Event ID 4769 RC4 anomaly detection
-│   ├── telemetry/bloodhound_attack_path_analysis.json # SharpHound attack graph export
-│   ├── configs/gpo_kerberos_hardening.md        # GPO AES-256 enforcement baseline
-│   └── README.md
+│  ├── scripts/kerberos_ticket_auditor.py    # Audits SPNs, RC4 ciphers, and delegation risks
+│  ├── scripts/spn_roast_detector.py      # Real-time Event ID 4769 RC4 anomaly detection
+│  ├── telemetry/bloodhound_attack_path_analysis.json # SharpHound attack graph export
+│  ├── configs/gpo_kerberos_hardening.md    # GPO AES-256 enforcement baseline
+│  └── README.md
 │
 ├── SOC-Incident-Response-Hunting-Lab/
-│   ├── sigma_rules/                             # Portable Sigma rules (Cobalt Strike, LSASS, PowerShell)
-│   ├── queries/siem_threat_hunting_queries.spl  # Splunk SPL hunting queries (Jitter, PPID, DCSync)
-│   ├── queries/elastic_kql_queries.kql          # Elastic Security KQL rules
-│   ├── forensics/volatility_memory_analysis.py  # Volatility 3 memory dump triage script
-│   ├── configs/sysmonconfig-soc-hardened.xml    # SwiftOnSecurity-aligned Sysmon schema
-│   └── README.md
+│  ├── sigma_rules/               # Portable Sigma rules (Cobalt Strike, LSASS, PowerShell)
+│  ├── queries/siem_threat_hunting_queries.spl # Splunk SPL hunting queries (Jitter, PPID, DCSync)
+│  ├── queries/elastic_kql_queries.kql     # Elastic Security KQL rules
+│  ├── forensics/volatility_memory_analysis.py # Volatility 3 memory dump triage script
+│  ├── configs/sysmonconfig-soc-hardened.xml  # SwiftOnSecurity-aligned Sysmon schema
+│  └── README.md
 │
 ├── Network-PCAP-Forensics-and-C2-Hunting/
-│   ├── tools/pcap_c2_beacon_analyzer.py         # Delta-time variance & jitter C2 beacon detector
-│   ├── tools/dns_tunnel_detector.py             # Shannon entropy DNS exfiltration detector
-│   ├── cheatsheets/wireshark_df_incident_response.md # Incident responder Wireshark filter sheet
-│   └── README.md
+│  ├── tools/pcap_c2_beacon_analyzer.py     # Delta-time variance & jitter C2 beacon detector
+│  ├── tools/dns_tunnel_detector.py       # Shannon entropy DNS exfiltration detector
+│  ├── cheatsheets/wireshark_df_incident_response.md # Incident responder Wireshark filter sheet
+│  └── README.md
 │
 ├── Cloud-Security-and-OWASP-Audit-Lab/
-│   ├── audit_scripts/iam_privesc_auditor.py     # AWS IAM privilege escalation scanner (21 vectors)
-│   ├── audit_scripts/jwt_security_auditor.py    # JWT algorithm confusion & token auditor
-│   ├── guides/aws_imdsv2_ssrf_defense.md        # AWS IMDSv2 metadata SSRF defense blueprint
-│   └── README.md
+│  ├── audit_scripts/iam_privesc_auditor.py   # AWS IAM privilege escalation scanner (21 vectors)
+│  ├── audit_scripts/jwt_security_auditor.py  # JWT algorithm confusion & token auditor
+│  ├── guides/aws_imdsv2_ssrf_defense.md    # AWS IMDSv2 metadata SSRF defense blueprint
+│  └── README.md
 │
-└── README.md                                    # This portfolio overview
+└── README.md                  # This portfolio overview
 ```
 
 ---
